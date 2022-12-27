@@ -1,10 +1,14 @@
 import { AxiosResponse } from "axios";
 import API, { updateAPI} from "../../lib/API";
-import store from "../../store";
 import { setUser } from "./auth";
 
+
+// initializes store at application setup to avoid circular deps
+let store: any;
+export const injectStore = (_store: any) => store = _store
+
 export const setUserAndAuth = (data: any) => {
-    updateAPI(data.access.token);
+    updateAPI(data.tokens.access.token);
   
     store.dispatch(setUser(data.data));
 };
@@ -14,3 +18,10 @@ export const setUserAndAuth = (data: any) => {
  * @returns {Promise<AxiosResponse>}
  */
 export const getUser = async (): Promise<AxiosResponse> => (await API.get(`/users/me`)).data;
+
+const authService = {
+    setUserAndAuth, 
+    getUser,
+};
+
+export default authService;

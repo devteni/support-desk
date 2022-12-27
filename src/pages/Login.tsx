@@ -4,8 +4,12 @@ import { toast } from 'react-toastify';
 import Button from '../components/shared/Button';
 import Card from '../components/shared/Card';
 import FormInput from '../components/shared/FormInput';
+import { useAppDispatch } from '../hooks/redux';
+import { login } from '../slices/auth/auth';
 
 const Login = () => {
+  const dispatch = useAppDispatch();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -22,7 +26,7 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
-
+    dispatch(login(formData));
   }
 
   return (
@@ -55,7 +59,7 @@ const Login = () => {
                 required={true}
               />
 
-              <Button type='submit' variant='dark' className='w-full'>Register</Button>
+              <Button type='submit' variant='dark' className='w-full'>Login</Button>
             </form>
           </div>          
         </Card>

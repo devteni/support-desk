@@ -25,7 +25,8 @@ const ProcessError = (error: Error | AxiosError | any) => {
     toast.error("We could not connect to the server");
     return "We could not connect to the server";
   } else {
-    toast.error("An Error occurred");
+    toast.error("An error occurred");
+    return "An error occurred"
   }
 };
 

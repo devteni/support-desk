@@ -1,11 +1,18 @@
 import React, { useState } from 'react'
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Button from '../components/shared/Button';
 import Card from '../components/shared/Card';
 import FormInput from '../components/shared/FormInput';
+import { register } from '../slices/auth/auth';
+
 
 const Register = () => {
+  const dispatch = useAppDispatch();
+
+  const { user, error , isLoading} = useAppSelector((state) => state.auth);
+
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -26,12 +33,14 @@ const Register = () => {
     e.preventDefault();
     console.log(formData);
 
-    const { password, confirmedPassword } = formData;
+    const { confirmedPassword, ...registerData } = formData;
 
-    if (password !== confirmedPassword) {
+    if (registerData.password !== confirmedPassword) {
       toast.error('Passwords do not match');
+    } else {
+      dispatch(register(registerData));
     }
-  }
+}
 
   return (
     <div className='h-screen flex flex-col'>

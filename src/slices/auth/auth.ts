@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../lib/API";
 import ProcessError from "../../lib/error";
-import { setUserAndAuth } from "./auth.service";
+import authService from "./auth.service";
 
 const initialState = {
     user: {},
@@ -10,21 +10,43 @@ const initialState = {
     error: "",
 };
 
-export const register = createAsyncThunk("auth/register", async (user, { rejectWithValue }) => {
+
+export const register = createAsyncThunk("auth/register", async (user: Record<string, string>, { rejectWithValue }) => {
     try {
       const { data } = await API.post(`/auth/register`, user);
+
+      authService.setUserAndAuth(data);
   
-      setUserAndAuth(data);
-  
-      if (data.data.email) {
-        window.location.href = "/businesses/create";
-        return data.data;
-      }
+      // if (data.data.email) {
+      //   window.location.href = "/tickets";
+      //   return data.data;
+      // }
     } catch (error) {
+      console.log(error)
       const err = ProcessError(error);
+      return rejectWithValue(err);
+    }
+});
+
+
+export const login = createAsyncThunk("auth/login", async (user: Record<string, string>, { rejectWithValue }) => {
+    try {
+      const { data } = await API.post(`/auth/login`, user);
+  
+      authService.setUserAndAuth(data);
+  
+      // if (data.data.email) {
+      //   window.location.href = "/tickets";
+      //   return data.data;
+      // }
+    } catch (error) {
+      console.log(error)
+      const err = ProcessError(error);
+      console.log(err)
       return rejectWithValue(err?.message);
     }
 });
+
 
 export const authSlice = createSlice({
     name: "auth",
@@ -54,22 +76,20 @@ export const authSlice = createSlice({
         .addCase(register.rejected, (state, action) => {
           state.isLoading = false;
           state.user = {};
-          state.error = JSON.stringify(action.payload);
+          state.error = `${action.payload}`;
         })
-        // .addCase(login.pending, (state) => {
-        //   state.isLoading = true;
-        // })
-        // .addCase(login.fulfilled, (state, action) => {
-        //   state.isLoading = false;
-        //   state.isSuccess = true;
-        //   state.user = action.payload;
-        // })
-        // .addCase(login.rejected, (state, action) => {
-        //   state.isLoading = false;
-        //   state.isError = true;
-        //   state.user = {};
-        //   state.message = JSON.stringify(action.payload);
-        // })
+        .addCase(login.pending, (state) => {
+          state.isLoading = true;
+        })
+        .addCase(login.fulfilled, (state, action) => {
+          state.isLoading = false;
+          state.user = action.payload;
+        })
+        .addCase(login.rejected, (state, action) => {
+          state.isLoading = false;
+          state.user = {};
+          state.error = `${action.payload}`;
+        })
         // .addCase(meQuery.pending, (state) => {
         //   state.isLoading = false;
         // })
@@ -86,6 +106,9 @@ export const authSlice = createSlice({
         // })
 
     },
-  });
-  export const { reset, setUser, setExpiry } = authSlice.actions;
-  export default authSlice.reducer;
+});
+
+const { actions, reducer } = authSlice;
+export const { reset, setUser, setExpiry } = actions;
+
+export default reducer;
