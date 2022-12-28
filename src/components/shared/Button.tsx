@@ -1,6 +1,13 @@
 import React from 'react'
 
-const Button = ({ type, children, className, variant="dark" }: { type?: "button" | "submit" | "reset" | undefined, children: string | JSX.Element, className?: string, variant?: string }) => {
+type Props =  { 
+  type?: "button" | "submit" | "reset" | undefined, children: string | JSX.Element, 
+  className?: string, variant?: string,
+  value?: string | number
+  onClick?: () => void
+};
+
+const Button: React.FC<Props> = ({ type, children, className, value, variant="dark", onClick }) => {
     const VARIANTS: Record<string, string> = {
         "primary": "text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 font-medium text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800",
         "danger": "focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-2 focus:ring-red-300 font-medium text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900",
@@ -12,7 +19,7 @@ const Button = ({ type, children, className, variant="dark" }: { type?: "button"
         "outline-danger": "",
     }
   return (
-    <button type={type ?? 'submit'} className={`${VARIANTS[variant]} ${className ?? ''}`}>
+    <button value={value} type={type ?? 'submit'} className={`${VARIANTS[variant]} ${className ?? ''}`} onClick={onClick}>
         {children}
     </button>
   )
