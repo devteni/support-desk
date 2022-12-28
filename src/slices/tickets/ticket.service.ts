@@ -1,9 +1,11 @@
 import API from "../../lib/API"
 
 type getParams = {
-    page: number,
-    size: number
+    page?: number,
+    size?: number
 }
+
+type getNotesParams = getParams & { ticketId: string };
 
 /**
  * Creates a ticket
@@ -26,6 +28,17 @@ export const fetchTickets = async (params: getParams) => {
 }
 
 /**
+ * 
+ * @param {object} params 
+ * @param {int} params.page
+ * @param {int} params.size The amount of document
+ * @returns 
+ */
+export const getNotes = async (params: getNotesParams) => {
+    return (await API.get('/notes', { params: { ticket_id: params.ticketId, page: params.page ?? 1, size: params.size ?? 10 }})).data
+}
+
+/**
  * Get a single ticket
  * @param id 
  * @returns 
@@ -43,6 +56,6 @@ export const closeTicket = async (id: string) => {
     return (await API.put(`/tickets/${id}`, { status: 'closed' })).data
 }
 
-const ticketService = { createTicket, fetchTickets, getTicket, closeTicket };
+const ticketService = { createTicket, fetchTickets, getTicket, closeTicket, getNotes };
 
 export default ticketService;
