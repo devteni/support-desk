@@ -15,7 +15,7 @@ const Header = () => {
   }
 
   return (
-    <header className='w-full flex flex-row justify-between items-center px-5 py-4 border-bottom border-2'>
+    <header className='min-w-full flex flex-row justify-between items-center px-5 py-4 border-bottom border-2'>
         <div className='text-black font-bold'>
             <Link to='/'>Support Desk</Link>
         </div>

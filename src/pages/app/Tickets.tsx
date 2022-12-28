@@ -47,7 +47,7 @@ const Tickets = () => {
   return (
     <Container>
       <>
-        <section className='w-3/5 mx-auto my-10'>
+        <section className='w-full lg:w-3/5 mx-auto my-10'>
           <div className="flex flex-row justify-between mb-6">
             <h1 className='text-3xl'>Tickets</h1>
             <Button onClick={() => navigate('/new-ticket')}>

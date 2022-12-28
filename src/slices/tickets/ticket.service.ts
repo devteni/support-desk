@@ -7,6 +7,11 @@ type getParams = {
 
 type getNotesParams = getParams & { ticketId: string };
 
+type createNotePayload = {
+    ticketId: string;
+    text: string;
+}
+
 /**
  * Creates a ticket
  * @param {object} payload 
@@ -14,6 +19,15 @@ type getNotesParams = getParams & { ticketId: string };
  */
 export const createTicket = async (payload: any) => {
     return await (await API.post("/tickets", payload)).data;
+}
+
+/**
+ * Adds a note to a ticket
+ * @param {object} payload 
+ * @returns 
+ */
+export const createNote = async (payload: createNotePayload) => {
+    return await (await API.post("/notes", payload)).data;
 }
 
 /**
@@ -56,6 +70,6 @@ export const closeTicket = async (id: string) => {
     return (await API.put(`/tickets/${id}`, { status: 'closed' })).data
 }
 
-const ticketService = { createTicket, fetchTickets, getTicket, closeTicket, getNotes };
+const ticketService = { createTicket, createNote, fetchTickets, getTicket, closeTicket, getNotes };
 
 export default ticketService;

@@ -38,6 +38,7 @@ const Ticket = () => {
         },
         onError: (err) => ProcessError(err)
     });
+
     // Add confirmation modal
     const closeTicket = async () => {
         window.alert('Are you sure you want to close this ticket?');
@@ -49,16 +50,24 @@ const Ticket = () => {
         refetchTicket();
     }
 
-    console.log(notes);
-
     const handleNoteChange = (e: React.ChangeEvent<HTMLInputElement | any>) => {
         e.persist();
 
         setNoteText(e.target.value);
     }
 
-    const handleNoteSubmit = () => {
-        console.log(noteText)
+    const handleNoteSubmit = async () => {
+        console.log(noteText);
+        try {
+            const { message } = await ticketService.createNote({ text: noteText, ticketId: id! });
+
+            refetchNotes();
+
+            setNoteModal(false);
+            toast.success(message);
+        } catch(error) {
+            ProcessError(error);
+        }
     }
 
     const handleModalClose = () => {
