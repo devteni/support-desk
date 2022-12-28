@@ -34,6 +34,15 @@ export const getTicket = async (id: string) => {
     return (await API.get(`/tickets/${id}`)).data
 }
 
-const ticketService = { createTicket, fetchTickets, getTicket };
+/**
+ * Close a ticket
+ * @param id 
+ * @returns 
+ */
+export const closeTicket = async (id: string) => {
+    return (await API.put(`/tickets/${id}`, { status: 'closed' })).data
+}
+
+const ticketService = { createTicket, fetchTickets, getTicket, closeTicket };
 
 export default ticketService;

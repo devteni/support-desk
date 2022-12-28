@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react'
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import BackButton from '../../components/shared/BackButton';
+import Button from '../../components/shared/Button';
 import Card from '../../components/shared/Card';
 import Container from '../../components/shared/Container'
 import { TICKET_STATUS } from '../../components/TicketItem';
@@ -20,6 +22,17 @@ const Ticket = () => {
         },
         onError: (err) => ProcessError(err)
     });
+
+    // Add confirmation modal
+    const closeTicket = async () => {
+        window.alert('Are you sure you want to close this ticket?');
+
+        await ticketService.closeTicket(id!);
+
+        toast.success('Ticket closed');
+
+        refetch();
+    }
 
     console.log(ticket);
 
@@ -44,7 +57,9 @@ const Ticket = () => {
                         </span>
                     </span>
                 </div>
-                <p className='text-left font-semibold text-md'>Date submitted: { new Date(ticket.createdAt).toLocaleString('en-US') }</p>
+                <h3 className='text-left font-semibold text-md'>Date submitted: { !isLoading && new Date(ticket.createdAt).toLocaleString('en-US') }</h3>
+                <h3 className='text-left font-semibold text-md'>Product: {ticket.product}</h3>
+
             </div>
 
             <Card className='p-2 rounded-lg bg-gray-100 my-6'>
@@ -55,6 +70,11 @@ const Ticket = () => {
                     </p>
                 </div>
             </Card>
+
+            {
+                ticket.status !== 'closed' &&
+                <Button className='w-full' variant='danger' onClick={() => closeTicket()}>Close Ticket</Button>
+            }
         </section>
     </Container>
   )

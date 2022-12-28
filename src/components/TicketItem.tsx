@@ -7,6 +7,7 @@ type Props = {
 
 export const TICKET_STATUS: Record<string, string> = {
     new: 'bg-green-500 text-white',
+    closed: 'bg-red-700 text-white'
 }
 
 const TicketItem: React.FC<Props> = ({ticket }) => {
