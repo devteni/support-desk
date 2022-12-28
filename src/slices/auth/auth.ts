@@ -17,10 +17,10 @@ export const register = createAsyncThunk("auth/register", async (user: Record<st
 
       authService.setUserAndAuth(data);
   
-      // if (data.data.email) {
-      //   window.location.href = "/tickets";
-      //   return data.data;
-      // }
+      if (data.data.email) {
+        window.location.href = "/tickets";
+        return data.data;
+      }
     } catch (error) {
       console.log(error)
       const err = ProcessError(error);
@@ -35,16 +35,29 @@ export const login = createAsyncThunk("auth/login", async (user: Record<string, 
   
       authService.setUserAndAuth(data);
   
-      // if (data.data.email) {
-      //   window.location.href = "/tickets";
-      //   return data.data;
-      // }
+      if (data.data.email) {
+        window.location.href = "/tickets";
+        return data.data;
+      }
     } catch (error) {
       console.log(error)
       const err = ProcessError(error);
       console.log(err)
       return rejectWithValue(err?.message);
     }
+});
+
+// Implement server-side logout
+export const logout = createAsyncThunk("auth/logout", async ({}, { rejectWithValue }) => {
+  try {
+    const { data } = await API.post(`/auth/logout`, {});
+
+    window.location.href = '/';
+
+  } catch (error) {
+    const err = ProcessError(error);
+    return rejectWithValue(err?.message);
+  }
 });
 
 
@@ -70,7 +83,7 @@ export const authSlice = createSlice({
         })
         .addCase(register.fulfilled, (state, action) => {
           state.isLoading = false;
-          state.user = action.payload;
+          state.user = action.payload!;
           state.error = "";
         })
         .addCase(register.rejected, (state, action) => {
@@ -89,6 +102,20 @@ export const authSlice = createSlice({
           state.isLoading = false;
           state.user = {};
           state.error = `${action.payload}`;
+        })
+        .addCase(logout.pending, (state) => {
+          state.isLoading = true;
+        })
+        .addCase(logout.fulfilled, (state, action) => {
+          state.isLoading = false;
+          state.user = {};
+          state.expires_in = 0;
+        })
+        .addCase(logout.rejected, (state, action) => {
+          state.isLoading = false;
+          state.user = {};
+          state.error = `${action.payload}`;
+          state.expires_in = 0;
         })
         // .addCase(meQuery.pending, (state) => {
         //   state.isLoading = false;
