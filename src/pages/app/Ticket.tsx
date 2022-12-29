@@ -16,6 +16,7 @@ import ticketService from '../../slices/tickets/ticket.service';
 
 const Ticket = () => {
     const { id } = useParams();
+    const [closeTicketModal, setCloseTicketModal] = useState(false);
     const [noteModal, setNoteModal] = useState(false);
     const [noteText, setNoteText] = useState('');
 
@@ -39,9 +40,7 @@ const Ticket = () => {
         onError: (err) => ProcessError(err)
     });
 
-    // Add confirmation modal
     const closeTicket = async () => {
-        window.alert('Are you sure you want to close this ticket?');
 
         await ticketService.closeTicket(id!);
 
@@ -99,7 +98,22 @@ const Ticket = () => {
                         </Button>
                     </div>
                 </div>
-            </Modal>    
+            </Modal>
+
+            <Modal title="Close Ticket" show={closeTicketModal} handleClose={() => setCloseTicketModal(false)}>
+                <div>
+                    <div className='mb-6'>
+                        Are you sure you want to close this ticket?
+                    </div>
+
+                    <hr className='mb-3'/>
+                    <div className='w-full'>
+                        <Button onClick={closeTicket} variant='danger' className='float-right'>
+                            Close Ticket
+                        </Button>
+                    </div>
+                </div>
+            </Modal>      
             <div className='mb-6'>
                 <BackButton url='/tickets'/>
             </div>
@@ -141,7 +155,7 @@ const Ticket = () => {
 
             {
                 ticket.status !== 'closed' &&
-                <Button className='w-full' variant='danger' onClick={() => closeTicket()}>Close Ticket</Button>
+                <Button className='w-full' variant='danger' onClick={() => setCloseTicketModal(true)}>Close Ticket</Button>
             }
         </section>
     </Container>
