@@ -29,17 +29,17 @@ function App() {
       .then((res) => {
         if (res === undefined) {
           console.log("We could not connect to the server");
+          setRefreshed(true);
         }
-        setAuth(res.data.user);
-        dispatch(setExpiry(res.data.expires_in));
+        setAuth(res?.data.user);
+        dispatch(setExpiry(res?.data.expires_in));
         setRefreshed(true);
 
-        updateAPI(res.data.token);
+        updateAPI(res?.data.token);
 
-        dispatch(setUser(res.data.user));
+        dispatch(setUser(res?.data.user));
       })
       .catch((err) => {
-        setAuth(err.response.data);
         setRefreshed(true);
       });
   };
@@ -64,8 +64,9 @@ function App() {
   useEffect(() => {
     refreshToken();
   }, []);
-
+ 
   if (!refreshed) {
+    console.log('not refreshed')
     return <></>;
   } else {
     return (
