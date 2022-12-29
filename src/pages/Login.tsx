@@ -11,8 +11,8 @@ const Login = () => {
   const dispatch = useAppDispatch();
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: 'hi@teniolafatunmbi.com',
+    password: 'dev',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
