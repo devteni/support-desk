@@ -62,7 +62,7 @@ const Tickets = () => {
               <th></th>
             </tr>
             <tbody>
-              { data?.data?.items?.map((ticket: any, idx: number) => {
+              { tickets?.map((ticket: any, idx: number) => {
                 return <TicketItem key={idx + Math.random()} ticket={ticket} />
               })}
             </tbody>
