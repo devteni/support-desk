@@ -10,8 +10,7 @@ const Header = () => {
 
   // Add confirmation modal to logout
   const onLogout = () => {
-    dispatch(logout());
-    dispatch(reset());
+    dispatch(logout({}));
   }
 
   return (

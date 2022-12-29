@@ -22,7 +22,6 @@ export const register = createAsyncThunk("auth/register", async (user: Record<st
         return data.data;
       }
     } catch (error) {
-      console.log(error)
       const err = ProcessError(error);
       return rejectWithValue(err);
     }
@@ -40,22 +39,23 @@ export const login = createAsyncThunk("auth/login", async (user: Record<string, 
         return data.data;
       }
     } catch (error) {
-      console.log(error)
       const err = ProcessError(error);
-      console.log(err)
       return rejectWithValue(err?.message);
     }
 });
 
 // Implement server-side logout
-export const logout = createAsyncThunk("auth/logout", async ({}, { rejectWithValue }) => {
+export const logout = createAsyncThunk("auth/logout", async (payload: any, { rejectWithValue }) => {
   try {
     const { data } = await API.post(`/auth/logout`, {});
 
     window.location.href = '/';
 
+    return data;
+
   } catch (error) {
     const err = ProcessError(error);
+    console.log(err)
     return rejectWithValue(err?.message);
   }
 });
@@ -113,9 +113,7 @@ export const authSlice = createSlice({
         })
         .addCase(logout.rejected, (state, action) => {
           state.isLoading = false;
-          state.user = {};
           state.error = `${action.payload}`;
-          state.expires_in = 0;
         })
         // .addCase(meQuery.pending, (state) => {
         //   state.isLoading = false;
