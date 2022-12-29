@@ -63,6 +63,7 @@ const Ticket = () => {
             refetchNotes();
 
             setNoteModal(false);
+            setNoteText('');
             toast.success(message);
         } catch(error) {
             ProcessError(error);
