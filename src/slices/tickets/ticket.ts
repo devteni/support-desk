@@ -42,7 +42,7 @@ export const createTicket = createAsyncThunk("ticket/createTicket", async (paylo
     }
 });
 
-export const getTickets = createAsyncThunk("ticket/getTickets", async({}, { getState, rejectWithValue}) => {
+export const getTickets = createAsyncThunk("ticket/getTickets", async({}, { getState, rejectWithValue}: { getState: any, rejectWithValue: any }) => {
     const tickets = getState().ticket;
     try {
         const data = await ticketService.fetchTickets({ page: tickets.currentPage, size: tickets.itemsPerPage });

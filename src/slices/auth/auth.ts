@@ -3,7 +3,14 @@ import API from "../../lib/API";
 import ProcessError from "../../lib/error";
 import authService from "./auth.service";
 
-const initialState = {
+type State = {
+  user: any,
+  isLoading: boolean,
+  expires_in: number,
+  error: string
+}
+
+const initialState: State = {
     user: {},
     isLoading: false,
     expires_in: 0,
