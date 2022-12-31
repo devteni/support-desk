@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Suspense, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 import Header from "./components/Header";
@@ -28,7 +28,7 @@ function App() {
     API.get("/auth/refresh-access-token")
       .then((res) => {
         if (res === undefined) {
-          console.log("We could not connect to the server");
+          toast.error("We could not connect to the server");
           setRefreshed(true);
         }
         setAuth(res?.data.user);
@@ -56,7 +56,6 @@ function App() {
   // expires_in value in milliseconds
   if (authData.expires_in > 0) {
     setTimeout(() => {
-      console.log('triggered', authData.expires_in)
       refreshToken();
     }, authData.expires_in * 1000 - 500);
   }
@@ -66,7 +65,6 @@ function App() {
   }, []);
  
   if (!refreshed) {
-    console.log('not refreshed')
     return <></>;
   } else {
     return (

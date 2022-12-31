@@ -62,7 +62,6 @@ export const logout = createAsyncThunk("auth/logout", async (payload: any, { rej
 
   } catch (error) {
     const err = ProcessError(error);
-    console.log(err)
     return rejectWithValue(err?.message);
   }
 });

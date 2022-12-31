@@ -32,11 +32,9 @@ export const createTicket = createAsyncThunk("ticket/createTicket", async (paylo
 
       toast.success(message);
 
-      console.log(data)
       return data;
 
     } catch (error) {
-      console.log(error)
       const err = ProcessError(error);
       return rejectWithValue(err);
     }
@@ -49,7 +47,6 @@ export const getTickets = createAsyncThunk("ticket/getTickets", async({}, { getS
 
         return data;
     } catch (error) {
-      console.log(error)
       const err = ProcessError(error);
       return rejectWithValue(err);
     }

@@ -23,8 +23,6 @@ const CreateTicket = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log(ticket);
-
     dispatch(createTicket(ticket));
     window.location.href = '/tickets';
   }
